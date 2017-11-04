@@ -4,3 +4,4 @@ target
 shots
 *.png
 *.iml
+dependency-reduced-pom.xml
