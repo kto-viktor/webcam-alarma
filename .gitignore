@@ -1,0 +1,6 @@
+*.log
+.idea
+target
+shots
+*.png
+*.iml

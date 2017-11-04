@@ -1,0 +1,49 @@
+<configuration scan="true" scanPeriod="30 seconds">
+    <property name="log_path" value="logs"/>
+    <property name="file_log_errors" value="${log_path}/errors.log"/>
+    <property name="file_log_app" value="${log_path}/app.log"/>
+    <property name="log_pattern" value="[%d{yyyy/MM/dd HH:mm:ss}] [%p] %c: %m %replace(%ex){'[\r\n]+', '\\\\n'} %nopex%n"/>
+
+    <appender name="application" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${file_log_app}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${file_log_app}.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="errors" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${file_log_errors}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${file_log_errors}.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="ru.victorpomidor" additivity="false" level="DEBUG">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="errors"/>
+        <appender-ref ref="application"/>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="errors"/>
+    </root>
+</configuration>
